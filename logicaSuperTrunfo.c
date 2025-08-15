@@ -61,7 +61,7 @@ void fim()
  * 
  */
 
- // Calcular densidade populacional
+// Calcular densidade populacional
 float calcular_densidade_populacional(float populacao, float area) 
 {
     if (area == 0) 
@@ -80,6 +80,59 @@ float calcular_pib_per_capita(float pib, float populacao)
     }
     return (pib * 1000000000.0f) / populacao;      // PIB em bilhões
 }
+
+// Struct para armazenar as propriedades de uma carta
+typedef struct {
+    char estado[MAX];
+    char codigo[MAX];
+    char cidade[MAX];
+    unsigned long int populacao;
+    float area;                     // Área em km²
+    float pib;                      // PIB em bilhões
+    float densidade_populacional;   // Densidade populacional (hab/km²)
+    float pib_per_capita;           // PIB per capita (R$)
+    int qtd_pontos_turisticos;
+} Carta;
+
+// Função para cadastrar uma carta
+void cadastrar_carta(Carta *carta) 
+{
+    /* Estado */
+    printf("\nEstado......................: ");    
+    fgets(carta->estado, MAX, stdin);
+    carta->estado[strcspn(carta->estado, "\n")] = '\0';       // Remove o \n do final
+
+    /* Código */
+    printf("Código......................: ");
+    fgets(carta->codigo, MAX, stdin);
+    carta->codigo[strcspn(carta->codigo, "\n")] = '\0';
+
+    /* Cidade */
+    printf("Cidade......................: ");    
+    fgets(carta->cidade, MAX, stdin);
+    carta->cidade[strcspn(carta->cidade, "\n")] = '\0';
+
+    /* População */
+    printf("População...................: ");
+    scanf("%lu", &carta->populacao); limpar_buffer();
+
+    /* Área (em km²)*/
+    printf("Área (em km²)...............: ");
+    scanf("%f", &carta->area); limpar_buffer();
+
+    /* PIB (em bilhões)*/    
+    printf("PIB (em bilhões)............: ");
+    scanf("%f", &carta->pib); limpar_buffer();
+
+    printf("Qtd de pontos turísticos....: ");
+    scanf("%d", &carta->qtd_pontos_turisticos); limpar_buffer();
+
+    carta->densidade_populacional = calcular_densidade_populacional(carta->populacao, carta->area);
+    carta->pib_per_capita = calcular_pib_per_capita(carta->pib, carta->populacao);
+    printf("Densidade populacional......: %.2f hab/km²\n", carta->densidade_populacional);
+    printf("PIB per capita..............: %.2f\n", carta->pib_per_capita);
+}
+
 
 /**
  * 
@@ -103,41 +156,9 @@ int main() {
     // Cadastro das variáveis da Carta 1
     printf("+++ CARTA 1 +++\n");
 
-    /* Estado */
-    printf("\nEstado......................: ");    
-    fgets(estado1, MAX, stdin);
-    estado1[strcspn(estado1, "\n")] = '\0';       // Remove o \n do final
-
-    /* Código */
-    printf("Código......................: ");
-    fgets(codigo_carta1, MAX, stdin);
-    codigo_carta1[strcspn(codigo_carta1, "\n")] = '\0';
-
-    /* Cidade */
-    printf("Cidade......................: ");    
-    fgets(cidade1, MAX, stdin);
-    cidade1[strcspn(cidade1, "\n")] = '\0';
-
-    /* População */
-    printf("População...................: ");
-    scanf("%lu", &populacao1); limpar_buffer();
-
-    /* Área (em km²)*/
-    printf("Área (em km²)...............: ");
-    scanf("%f", &area1); limpar_buffer();
-
-    /* PIB (em bilhões)*/    
-    printf("PIB (em bilhões)............: ");
-    scanf("%f", &pib1); limpar_buffer();
-
-    printf("Qtd de pontos turísticos....: ");
-    scanf("%d", &qtd_pontos_turisticos1); limpar_buffer();
-
-    densidade1 = calcular_densidade_populacional(populacao1, area1);
-    calcular_pib_per_capita1 = calcular_pib_per_capita(pib1, populacao1);
-    printf("Densidade populacional......: %.2f hab/km²\n", densidade1);
-    printf("PIB per capita..............: %.2f\n", calcular_pib_per_capita1);
-
+    Carta carta1;
+    cadastrar_carta(&carta1);
+        
     printf("\n\t ++ Dados cadastrados com sucesso ++\n");
     esperar_dois_milissegundos();
     limpar_tela();
