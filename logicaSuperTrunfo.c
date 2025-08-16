@@ -133,6 +133,19 @@ void cadastrar_carta(Carta *carta)
     printf("PIB per capita..............: %.2f\n", carta->pib_per_capita);
 }
 
+// Função para exibir os dados de uma carta
+void exibir_carta(Carta carta)
+{
+    printf("- Estado..................: %s\n", carta.estado);
+    printf("- Código da carta.........: %s\n", carta.codigo);
+    printf("- Cidade..................: %s\n", carta.cidade);
+    printf("- População...............: %lu\n", carta.populacao);
+    printf("- Área....................: %.2f km²\n", carta.area);
+    printf("- PIB.....................: R$ %.2f bilhões\n", carta.pib);
+    printf("- Pontos turísticos.......: %d\n", carta.qtd_pontos_turisticos);
+    printf("- Densidade populacional..: %.2f hab/km²\n", carta.densidade_populacional);
+    printf("- PIB per capita..........: R$ %.2f\n", carta.pib_per_capita);
+}
 
 /**
  * 
@@ -141,7 +154,7 @@ void cadastrar_carta(Carta *carta)
  */
 
 int main() {
-    // Definição das variáveis para armazenar as propriedades das cidades
+    // Definição das variáveis para armazenar as propriedades das cidades    
     char estado1[MAX], estado2[MAX];
     char codigo_carta1[MAX], codigo_carta2[MAX];
     char cidade1[MAX], cidade2[MAX];
@@ -173,15 +186,7 @@ int main() {
 
     // Exibindo os dados lidos (opcional, para verificar)
     printf(" --- Dados da Carta 1 ---\n");
-    printf("-Estado..................: %s\n", carta1.estado);
-    printf("-Código da carta.........: %s\n", carta1.codigo);
-    printf("-Cidade..................: %s\n", carta1.cidade);
-    printf("-População...............: %lu\n", carta1.populacao);
-    printf("-Área....................: %.2f km²\n", carta1.area);    
-    printf("-PIB.....................: R$ %.2f bilhões\n", carta1.pib);
-    printf("-Pontos turísticos.......: %d\n", carta1.qtd_pontos_turisticos);
-    printf("-Densidade populacional..: %.2f hab/km²\n", carta1.densidade_populacional);
-    printf("-PIB per capita..........: R$ %.2f\n", carta1.pib_per_capita);
+    exibir_carta(carta1);
 
     printf("\n --- Dados da Carta 2 ---\n");
     printf("-Estado..................: %s\n", carta2.estado);
