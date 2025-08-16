@@ -184,20 +184,12 @@ int main() {
     esperar_dois_milissegundos();
     limpar_tela();
 
-    // Exibindo os dados lidos (opcional, para verificar)
+    // Exibindo os dados lidos 
     printf(" --- Dados da Carta 1 ---\n");
     exibir_carta(carta1);
 
     printf("\n --- Dados da Carta 2 ---\n");
-    printf("-Estado..................: %s\n", carta2.estado);
-    printf("-Código da carta.........: %s\n", carta2.codigo);          
-    printf("-Cidade..................: %s\n", carta2.cidade);
-    printf("-População...............: %lu\n", carta2.populacao);
-    printf("-Área....................: %.2f km²\n", carta2.area);    
-    printf("-PIB.....................: R$ %.2f bilhões\n", carta2.pib);
-    printf("-Pontos turísticos.......: %d\n", carta2.qtd_pontos_turisticos);
-    printf("-Densidade populacional..: %.2f hab/km²\n", carta2.densidade_populacional);
-    printf("-PIB per capita..........: R$ %.2f\n", carta2.pib_per_capita);
+    exibir_carta(carta2);
 
     fim();
 
