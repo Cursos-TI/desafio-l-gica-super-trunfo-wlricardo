@@ -191,23 +191,23 @@ Carta* carta_vencedora(Carta* carta1, Carta* carta2, Atributo atributo)
 }
 
 // Função que retorna o valor do atributo escolhido na comparação
-double obter_valor_atributo(Carta* carta, Atributo atributo)
+double obter_valor_atributo(Carta carta, Atributo atributo)
 {
     switch (atributo) {
         case POPULACAO:
-            return carta->populacao;
+            return carta.populacao;
             break;
         case AREA:
-            return carta->area;
+            return carta.area;
             break;
         case PIB:
-            return carta->pib;
+            return carta.pib;
             break;
         case PONTOS_TURISTICOS:
-            return carta->qtd_pontos_turisticos;
+            return carta.qtd_pontos_turisticos;
             break;
         case DENSIDADE_POPULACIONAL:
-            return carta->densidade_populacional;
+            return carta.densidade_populacional;
             break;
         default:
             printf("Atributo inválido!\n");
@@ -218,7 +218,7 @@ double obter_valor_atributo(Carta* carta, Atributo atributo)
 // Função para comparar duas cartas por um de seus atributos
 void comparar_cartas(Carta carta1, Carta carta2)
 {
-    char atributo[30];
+    char atributo[40];
     int opcao;
     double valor;
     double valor1, valor2;
@@ -234,31 +234,30 @@ void comparar_cartas(Carta carta1, Carta carta2)
     scanf("%d", &opcao); limpar_buffer();
 
     vencedor = carta_vencedora(&carta1, &carta2, opcao);
-    valor = obter_valor_atributo(&vencedor, opcao);
 
     switch (opcao) {
         case 1: // Comparar população
-            atributo[30] = strcpy(atributo, "População");
+            strcpy(atributo, "População");
             valor1 = carta1.populacao;
             valor2 = carta2.populacao;
             break;
         case 2: // Comparar área
-            atributo[30] = strcpy(atributo, "Área");
+            strcpy(atributo, "Área");
             valor1 = carta1.area;
             valor2 = carta2.area;
             break;
         case 3: // Comparar PIB
-            atributo[30] = "PIB";
+            strcpy(atributo, "PIB");
             valor1 = carta1.pib;
             valor2 = carta2.pib;
             break;
         case 4: // Comparar quantidade de pontos turísticos
-            atributo[30] = strcpy(atributo, "Quantidade de pontos turísticos");
+            strcpy(atributo, "Quantidade de pontos turísticos");
             valor1 = carta1.qtd_pontos_turisticos;
             valor2 = carta2.qtd_pontos_turisticos;
             break;                
         case 5: // Comparar densidade populacional
-            atributo[30] = strcpy(atributo, "Densidade populacional");
+            strcpy(atributo, "Densidade populacional");
             valor1 = carta1.densidade_populacional;
             valor2 = carta2.densidade_populacional;
             break;
@@ -268,15 +267,19 @@ void comparar_cartas(Carta carta1, Carta carta2)
 
     printf("\nResultado da comparação:\n");
     printf("\nAtributo escolhido: %-30s\n", atributo);
-    printf("Cidade 1 : %-30s ::: Cidade 2 : %-30s\n", carta1.cidade, carta2.cidade);
-    printf("%s da Carta 1  : %-30.2f ::: %s da Carta 2  : %-30.2f\n", atributo, valor1, atributo, valor2);
+    printf("Cidade 1 : %-30s\t:::\t Cidade 2 : %-30s\n", carta1.cidade, carta2.cidade);
+    printf("%s da Carta 1  : %-30.2f\t:::\t %s da Carta 2  : %-30.2f\n", atributo, valor1, atributo, valor2);
+    printf("\nResultado : ");
 
-    if (vencedor == &carta1) {
-        printf("Carta 1 é a vencedora!\n");
-    } else if (vencedor == &carta2) {
-        printf("Carta 2 é a vencedora!\n");
-    } else  {
-        printf("Houve empate !\n");
+    if (vencedor != NULL) {
+        valor = obter_valor_atributo(*vencedor, opcao);
+        if(vencedor == &carta1) {
+            printf("A Carta 1 venceu com %s = %.2f\n", atributo, valor);
+        } else {
+            printf("A Carta 2 venceu com %s = %.2f\n", atributo, valor);
+        }
+    } else {    
+        printf("Houve empate!\n");
     }
 }
 
@@ -312,6 +315,12 @@ int main() {
 
     printf("\n --- Dados da Carta 2 ---\n");
     exibir_carta(carta2);
+
+    printf("\n\t ++ Iniciando o jogo ++\n");
+    esperar_dois_milissegundos();
+    limpar_tela();
+
+    comparar_cartas(carta1, carta2);
 
     fim();
 
