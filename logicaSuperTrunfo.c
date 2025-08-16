@@ -155,7 +155,6 @@ int main() {
     
     // Cadastro das variáveis da Carta 1
     printf("+++ CARTA 1 +++\n");
-
     Carta carta1;
     cadastrar_carta(&carta1);
         
@@ -165,41 +164,8 @@ int main() {
 
     // Cadastro das variáveis da Carta 2
     printf("+++ CARTA 2 +++\n");
-
-    /* Estado */
-    printf("\nEstado......................: ");    
-    fgets(estado2, MAX, stdin);
-    estado2[strcspn(estado2, "\n")] = '\0';       // Remove o \n do final
-
-    /* Código */
-    printf("Código......................: ");
-    fgets(codigo_carta2, MAX, stdin);
-    codigo_carta2[strcspn(codigo_carta2, "\n")] = '\0';
-
-    /* Cidade */
-    printf("Cidade......................: ");    
-    fgets(cidade2, MAX, stdin);
-    cidade2[strcspn(cidade2, "\n")] = '\0';
-
-    /* População */
-    printf("População...................: ");
-    scanf("%lu", &populacao2); limpar_buffer();
-
-    /* Área (em km²)*/
-    printf("Área (em km²)...............: ");
-    scanf("%f", &area2); limpar_buffer();
-
-    /* PIB (em bilhões)*/    
-    printf("PIB (em bilhões)............: ");
-    scanf("%f", &pib2); limpar_buffer();
-
-    printf("Qtd de pontos turísticos....: ");
-    scanf("%d", &qtd_pontos_turisticos2); limpar_buffer();
-
-    densidade2 = calcular_densidade_populacional(populacao2, area2);
-    calcular_pib_per_capita2 = calcular_pib_per_capita(pib2, populacao2);
-    printf("Densidade populacional......: %.2f hab/km²\n", densidade2);
-    printf("PIB per capita..............: %.2f\n", calcular_pib_per_capita2);
+    Carta carta2;   
+    cadastrar_carta(&carta2);
 
     printf("\n\t ++ Dados cadastrados com sucesso ++\n");
     esperar_dois_milissegundos();
@@ -207,26 +173,26 @@ int main() {
 
     // Exibindo os dados lidos (opcional, para verificar)
     printf(" --- Dados da Carta 1 ---\n");
-    printf("-Estado..................: %s\n", estado1);
-    printf("-Código da carta.........: %s\n", codigo_carta1);
-    printf("-Cidade..................: %s\n", cidade1);
-    printf("-População...............: %lu\n", populacao1);
-    printf("-Área....................: %.2f km²\n", area1);    
-    printf("-PIB.....................: R$ %.2f bilhões\n", pib1);
-    printf("-Pontos turísticos.......: %d\n", qtd_pontos_turisticos1);
-    printf("-Densidade populacional..: %.2f hab/km²\n", densidade1);
-    printf("-PIB per capita..........: R$ %.2f\n", calcular_pib_per_capita1);
+    printf("-Estado..................: %s\n", carta1.estado);
+    printf("-Código da carta.........: %s\n", carta1.codigo);
+    printf("-Cidade..................: %s\n", carta1.cidade);
+    printf("-População...............: %lu\n", carta1.populacao);
+    printf("-Área....................: %.2f km²\n", carta1.area);    
+    printf("-PIB.....................: R$ %.2f bilhões\n", carta1.pib);
+    printf("-Pontos turísticos.......: %d\n", carta1.qtd_pontos_turisticos);
+    printf("-Densidade populacional..: %.2f hab/km²\n", carta1.densidade_populacional);
+    printf("-PIB per capita..........: R$ %.2f\n", carta1.pib_per_capita);
 
     printf("\n --- Dados da Carta 2 ---\n");
-    printf("-Estado..................: %s\n", estado2);
-    printf("-Código da carta.........: %s\n", codigo_carta2);          
-    printf("-Cidade..................: %s\n", cidade2);
-    printf("-População...............: %lu\n", populacao2);
-    printf("-Área....................: %.2f km²\n", area2);    
-    printf("-PIB.....................: R$ %.2f bilhões\n", pib2);
-    printf("-Pontos turísticos.......: %d\n", qtd_pontos_turisticos2);
-    printf("-Densidade populacional..: %.2f hab/km²\n", densidade2);
-    printf("-PIB per capita..........: R$ %.2f\n", calcular_pib_per_capita2);
+    printf("-Estado..................: %s\n", carta2.estado);
+    printf("-Código da carta.........: %s\n", carta2.codigo);          
+    printf("-Cidade..................: %s\n", carta2.cidade);
+    printf("-População...............: %lu\n", carta2.populacao);
+    printf("-Área....................: %.2f km²\n", carta2.area);    
+    printf("-PIB.....................: R$ %.2f bilhões\n", carta2.pib);
+    printf("-Pontos turísticos.......: %d\n", carta2.qtd_pontos_turisticos);
+    printf("-Densidade populacional..: %.2f hab/km²\n", carta2.densidade_populacional);
+    printf("-PIB per capita..........: R$ %.2f\n", carta2.pib_per_capita);
 
     fim();
 
