@@ -166,12 +166,16 @@ Carta* carta_vencedora(Carta* carta1, Carta* carta2, Atributo atributo)
             break;
         case AREA:
             comparacao = carta1->area > carta2->area ? 1 : (carta1->area == carta2->area ? 0 : 2);
+            break;
         case PIB:
             comparacao = carta1->pib > carta2->pib ? 1 : (carta1->pib == carta2->pib ? 0 : 2);
+            break;
         case PONTOS_TURISTICOS:
             comparacao = carta1->qtd_pontos_turisticos > carta2->qtd_pontos_turisticos ? 1 : (carta1->qtd_pontos_turisticos == carta2->qtd_pontos_turisticos ? 0 : 2);
+            break;
         case DENSIDADE_POPULACIONAL:
-            comparacao = carta1->densidade_populacional > carta2->densidade_populacional ? 1 : (carta1->densidade_populacional == carta2->densidade_populacional ? 0 : 2);
+            comparacao = carta1->densidade_populacional < carta2->densidade_populacional ? 1 : (carta1->densidade_populacional == carta2->densidade_populacional ? 0 : 2);
+            break;
         default:
             printf("Atributo inválido!\n");
             comparacao = 0;         // Indica empate
@@ -187,23 +191,23 @@ Carta* carta_vencedora(Carta* carta1, Carta* carta2, Atributo atributo)
 }
 
 // Função que retorna o valor do atributo escolhido na comparação
-double obter_valor_atributo(Carta carta, Atributo atributo)
+double obter_valor_atributo(Carta* carta, Atributo atributo)
 {
     switch (atributo) {
         case POPULACAO:
-            return carta.populacao;
+            return carta->populacao;
             break;
         case AREA:
-            return carta.area;
+            return carta->area;
             break;
         case PIB:
-            return carta.pib;
+            return carta->pib;
             break;
         case PONTOS_TURISTICOS:
-            return carta.qtd_pontos_turisticos;
+            return carta->qtd_pontos_turisticos;
             break;
         case DENSIDADE_POPULACIONAL:
-            return carta.densidade_populacional;
+            return carta->densidade_populacional;
             break;
         default:
             printf("Atributo inválido!\n");
@@ -217,6 +221,7 @@ void comparar_cartas(Carta carta1, Carta carta2)
     char atributo[30];
     int opcao;
     double valor;
+    double valor1, valor2;
     Carta* vencedor;
     
     printf("\nEscolha o atributo a ser comparado: ");
@@ -228,43 +233,50 @@ void comparar_cartas(Carta carta1, Carta carta2)
     printf("\n\n>  ");
     scanf("%d", &opcao); limpar_buffer();
 
-    /* O nome dos dois países.
-       O atributo usado na comparação.
-       Os valores do atributo para cada carta.
-       Qual carta venceu.
-       Em caso de empate, exibir a mensagem "Empate!".*/
-
     vencedor = carta_vencedora(&carta1, &carta2, opcao);
-    valor = obter_valor_atributo(*vencedor, opcao);
+    valor = obter_valor_atributo(&vencedor, opcao);
 
     switch (opcao) {
         case 1: // Comparar população
             atributo[30] = strcpy(atributo, "População");
+            valor1 = carta1.populacao;
+            valor2 = carta2.populacao;
             break;
         case 2: // Comparar área
             atributo[30] = strcpy(atributo, "Área");
+            valor1 = carta1.area;
+            valor2 = carta2.area;
             break;
         case 3: // Comparar PIB
             atributo[30] = "PIB";
+            valor1 = carta1.pib;
+            valor2 = carta2.pib;
             break;
         case 4: // Comparar quantidade de pontos turísticos
             atributo[30] = strcpy(atributo, "Quantidade de pontos turísticos");
+            valor1 = carta1.qtd_pontos_turisticos;
+            valor2 = carta2.qtd_pontos_turisticos;
             break;                
         case 5: // Comparar densidade populacional
             atributo[30] = strcpy(atributo, "Densidade populacional");
+            valor1 = carta1.densidade_populacional;
+            valor2 = carta2.densidade_populacional;
             break;
         default:
             printf("\n\t ++ Atributo inválido! ++\n");
     }    
 
     printf("\nResultado da comparação:\n");
+    printf("\nAtributo escolhido: %-30s\n", atributo);
     printf("Cidade 1 : %-30s ::: Cidade 2 : %-30s\n", carta1.cidade, carta2.cidade);
-    printf("Atributo escolhido: %-30s\n", atributo);
-    if (valor == 0) {
-        printf("Empate!\n");
-        return 0; // Indica empate
-    } else {
-        printf("Carta vendedora: Carta %d\n", carta_vencedora);
+    printf("%s da Carta 1  : %-30.2f ::: %s da Carta 2  : %-30.2f\n", atributo, valor1, atributo, valor2);
+
+    if (vencedor == &carta1) {
+        printf("Carta 1 é a vencedora!\n");
+    } else if (vencedor == &carta2) {
+        printf("Carta 2 é a vencedora!\n");
+    } else  {
+        printf("Houve empate !\n");
     }
 }
 
@@ -276,20 +288,10 @@ void comparar_cartas(Carta carta1, Carta carta2)
 
 int main() {
     // Definição das variáveis para armazenar as propriedades das cidades    
-    char estado1[MAX], estado2[MAX];
-    char codigo_carta1[MAX], codigo_carta2[MAX];
-    char cidade1[MAX], cidade2[MAX];
-    unsigned long int populacao1, populacao2;
-    float area1, area2;
-    float pib1, pib2;
-    int qtd_pontos_turisticos1, qtd_pontos_turisticos2;
-    float densidade1, densidade2;
-    float calcular_pib_per_capita1, calcular_pib_per_capita2;
-    
+    Carta carta1, carta2;
     
     // Cadastro das variáveis da Carta 1
     printf("+++ CARTA 1 +++\n");
-    Carta carta1;
     cadastrar_carta(&carta1);
         
     printf("\n\t ++ Dados cadastrados com sucesso ++\n");
@@ -298,7 +300,6 @@ int main() {
 
     // Cadastro das variáveis da Carta 2
     printf("+++ CARTA 2 +++\n");
-    Carta carta2;   
     cadastrar_carta(&carta2);
 
     printf("\n\t ++ Dados cadastrados com sucesso ++\n");
