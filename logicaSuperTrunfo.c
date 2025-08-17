@@ -155,6 +155,57 @@ void exibir_carta(Carta carta)
     printf("- PIB per capita..........: R$ %.2f\n", carta.pib_per_capita);
 }
 
+// Função para exibir a saída formatada das cartas
+void exibir_saida_formatada(Carta carta1, Carta carta2, Atributo atributo)
+{
+    printf("--------------------------------------------------    --------------------------------------------------\n");
+    printf("Cidade 1 - %-39s    Cidade 2 - %-39s\n", carta1.cidade, carta2.cidade);
+
+    switch (atributo)
+    {        
+        case POPULACAO:
+        printf("População - %-38lu    População - %-38lu\n", carta1.populacao, carta2.populacao);       
+        break;
+    case AREA:
+        printf("Área - %-43.2f    Área - %-43.2f\n", carta1.area, carta2.area);   
+        break;
+    case PIB:
+        printf("PIB - %-44.2f    PIB - %-44.2f\n", carta1.pib, carta2.pib);
+        break;
+    case PONTOS_TURISTICOS:
+        printf("Quantidade de pontos turísticos - %-16d    Quantidade de pontos turísticos - %-16d\n", carta1.qtd_pontos_turisticos, carta2.qtd_pontos_turisticos);
+        break;
+    case DENSIDADE_POPULACIONAL:
+        printf("Densidade populacional - %-25.2f    Densidade populacional - %-25.2f\n", carta1.densidade_populacional, carta2.densidade_populacional);               
+    }
+}
+
+// Função para exibir a saída formatada da carta vencedora
+void exibir_carta_vencedora(Carta carta1, Atributo atributo)
+{
+    char atributo_str[40];
+    switch (atributo) {
+        case POPULACAO:
+            strcpy(atributo_str, "População");
+            break;
+        case AREA:
+            strcpy(atributo_str, "Área");
+            break;
+        case PIB:
+            strcpy(atributo_str, "PIB");
+            break;
+        case PONTOS_TURISTICOS:
+            strcpy(atributo_str, "Quantidade de pontos turísticos");
+            break;
+        case DENSIDADE_POPULACIONAL:
+            strcpy(atributo_str, "Densidade populacional");
+            break;
+        default:
+            printf("Atributo inválido!\n");
+            return;
+    }
+}
+
 // Função para determinar qual carta é a vencedora
 // Retorna 1 se carta1 vencer, 2 se carta2 vencer, 0 em caso de empate
 Carta* carta_vencedora(Carta* carta1, Carta* carta2, Atributo atributo)
@@ -263,13 +314,17 @@ void comparar_cartas(Carta carta1, Carta carta2)
             break;
         default:
             printf("\n\t ++ Atributo inválido! ++\n");
-    }    
+    }  
 
-    printf("\nResultado da comparação:\n");
-    printf("\nAtributo escolhido: %-30s\n", atributo);
-    printf("%-44s : %-30s %-44s : %-30s\n", "Cidade 1: ", carta1.cidade, "Cidade 2: ", carta2.cidade);
-    printf("%-33sda Carta 1 : %-10.2f %-33sda Carta 2 : %-10.2f\n", atributo, valor1, atributo, valor2);
-    printf("Resultado : ");
+    printf("\n===========================================================================================================");
+    printf("\n                                          RESULTADO DA COMPARAÇÃO                                          ");
+    printf("\n===========================================================================================================\n\n");
+    printf("Atributo escolhido: %-30s\n\n", atributo);
+    printf("CARTA 1:                                              CARTA 2:                                          \n");
+    
+    exibir_saida_formatada(carta1, carta2, opcao);
+
+    printf("\n\nResultado : ");
 
     if (vencedor != NULL) {
         valor = obter_valor_atributo(*vencedor, opcao);
