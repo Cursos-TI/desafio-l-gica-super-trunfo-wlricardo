@@ -267,9 +267,9 @@ void comparar_cartas(Carta carta1, Carta carta2)
 
     printf("\nResultado da comparação:\n");
     printf("\nAtributo escolhido: %-30s\n", atributo);
-    printf("Cidade 1 : %-30s\t:::\t Cidade 2 : %-30s\n", carta1.cidade, carta2.cidade);
-    printf("%s da Carta 1  : %-30.2f\t:::\t %s da Carta 2  : %-30.2f\n", atributo, valor1, atributo, valor2);
-    printf("\nResultado : ");
+    printf("%-44s : %-30s %-44s : %-30s\n", "Cidade 1: ", carta1.cidade, "Cidade 2: ", carta2.cidade);
+    printf("%-33sda Carta 1 : %-10.2f %-33sda Carta 2 : %-10.2f\n", atributo, valor1, atributo, valor2);
+    printf("Resultado : ");
 
     if (vencedor != NULL) {
         valor = obter_valor_atributo(*vencedor, opcao);
