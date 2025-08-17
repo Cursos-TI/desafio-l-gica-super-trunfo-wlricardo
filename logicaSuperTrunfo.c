@@ -301,7 +301,6 @@ void comparar_cartas(Carta* carta1, Carta* carta2)
     double valor[2][1];
     int opcao[2] = {0,0}, contador = 0;
     int opcoes[5] = {1, 2, 3, 4, 5};            // Opções de atributos disponíveis
-    double valor;
     double valor[2] = {0.0, 0.0};               // Valores dos atributos escolhidos para comparação
     Carta* vencedor;
     
