@@ -48,6 +48,33 @@ void limpar_tela()
     #endif
 }
 
+// Função menu()
+/* Exibe um menu com as opções a serem seleciondas pelos usuários */
+int menu(int contador)  
+{    
+    int opcao = 0;
+    do
+    {
+        printf("\nEscolha o %d atributo a ser comparado: ", contador + 1);
+        printf("\n1. População");
+        printf("\n2. Área");
+        printf("\n3. PIB");
+        printf("\n4. Quantidade de pontos turísticos");
+        printf("\n5. Densidade populacional");
+        printf("\n\n>  ");
+        scanf("%d", &opcao); limpar_buffer();  
+
+        if (opcao < 1 || opcao > 5) {
+            printf("\n\t ++ Opção inválida! Tente novamente. ++\n");
+            esperar_dois_milissegundos();
+            limpar_tela();
+        }
+
+    } while (opcao < 1 || opcao > 5);
+    
+    return opcao;
+}
+
 // Função fim()
 /* Exibe uma mensagem de fim de programa */
 void fim() 
@@ -267,15 +294,62 @@ double obter_valor_atributo(Carta carta, Atributo atributo)
 }
 
 // Função para comparar duas cartas por um de seus atributos
-void comparar_cartas(Carta carta1, Carta carta2)
+void comparar_cartas(Carta* carta1, Carta* carta2)
 {
-    char atributo[40];
-    int opcao;
+    Carta carta[2] = { *carta1, *carta2 };     // Cria um array de cartas para facilitar o acesso
+    char atributo[2][40];
+    double valor[2][1];
+    int opcao[2] = {0,0}, contador = 0;
+    int opcoes[5] = {1, 2, 3, 4, 5};            // Opções de atributos disponíveis
     double valor;
-    double valor1, valor2;
+    double valor[2] = {0.0, 0.0};               // Valores dos atributos escolhidos para comparação
     Carta* vencedor;
     
-    printf("\nEscolha o atributo a ser comparado: ");
+    while (contador < 2) {        
+        opcao[contador] = menu(contador); limpar_buffer();
+
+        while (opcao[contador] == opcoes[0] || opcao[contador] == opcoes[1] 
+            || opcao[contador] == opcoes[2] || opcao[contador] == opcoes[3] 
+            || opcao[contador] == opcoes[4])
+        {
+            printf("\n\t ++ A opção %d já foi escolhida! ++", contador + 1);
+            printf("\n\t ++ Tente novamente...     ++\n");
+            
+            esperar_dois_milissegundos();
+            limpar_tela();
+
+            opcao[contador] = menu(contador); limpar_buffer();
+        }
+             
+        switch (opcao[contador]) {
+            case 1: // Comparar população
+                strcpy(atributo[contador], "População");
+                valor[contador][0] = (unsigned long int)carta[contador].populacao;
+                break;
+            case 2: // Comparar área
+                strcpy(atributo[contador][40], "Área");
+                valor[contador][0] = carta[contador].area;
+                break;
+            case 3: // Comparar PIB
+                strcpy(atributo[contador][40], "PIB");
+                valor[contador][0] = carta[contador].pib;
+                break;
+            case 4: // Comparar quantidade de pontos turísticos
+                strcpy(atributo[contador][40], "Quantidade de pontos turísticos");
+                valor[contador][0] = carta[contador].qtd_pontos_turisticos;
+                break;                
+            case 5: // Comparar densidade populacional
+                strcpy(atributo[contador][40], "Densidade populacional");
+                valor[contador][0] = carta[contador].densidade_populacional;  
+                break;
+            default:
+                printf("\n\t ++ Atributo inválido! ++\n");
+        }
+        contador++;  
+    }
+
+    /*
+    printf("\nEscolha o %d atributo a ser comparado: ", contador + 1);
     printf("\n1. População");   
     printf("\n2. Área");
     printf("\n3. PIB");
@@ -283,9 +357,11 @@ void comparar_cartas(Carta carta1, Carta carta2)
     printf("\n5. Densidade populacional");
     printf("\n\n>  ");
     scanf("%d", &opcao); limpar_buffer();
+    */
 
     vencedor = carta_vencedora(&carta1, &carta2, opcao);
 
+    /*
     switch (opcao) {
         case 1: // Comparar população
             strcpy(atributo, "População");
@@ -336,6 +412,7 @@ void comparar_cartas(Carta carta1, Carta carta2)
     } else {    
         printf("Houve empate!\n");
     }
+    */
 }
 
 /**
@@ -375,7 +452,7 @@ int main() {
     esperar_dois_milissegundos();
     limpar_tela();
 
-    comparar_cartas(carta1, carta2);
+    comparar_cartas(&carta1, &carta2);
 
     fim();
 
