@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 // Desafio Super Trunfo - Países
 // Tema 2 - Comparação das Cartas
 // Este código inicial serve como base para o desenvolvimento do sistema de comparação de cartas de cidades. 
@@ -299,18 +298,18 @@ void comparar_cartas(Carta carta1, Carta carta2)
     //Carta carta[2] = { *carta1, *carta2 };        // Cria um array de cartas para facilitar o acesso
     char atributo[2][40] = { "", "" };              // Array para armazenar os atributos escolhidos
     int opcao[2] = {0,0}, contador = 0;
-    int opcoes[2] = {0, 0};                         // Para armazenar as opções já escolhidas
+    int atributos_escolhidos[2] = {0, 0};                         // Para armazenar as opções já escolhidas
     double valor[2] = {0.0, 0.0};                   // Valores dos atributos escolhidos para comparação : valor[0] para carta1 e valor[1] para carta2
     double soma[2] = {0.0, 0.0};                    // Soma dos valores dos atributos escolhidos : soma[0] para carta1 e soma[1] para carta2
     Carta* vencedor_atributo[2] = {NULL, NULL};     // Array para armazenar o vencedor de cada atributo
     
     while (contador < 2) {        
-        opcao[contador] = menu(contador); limpar_buffer();
+        opcao[contador] = menu(contador); 
 
         // Verifica se a opção já foi escolhida anteriormente
         int ja_escolhida = 0;
         for (int i = 0; i < contador; i++) {
-            if (opcao[contador] == opcoes[i]) {
+            if (opcao[contador] == atributos_escolhidos[i]) {
                 ja_escolhida = 1;
                 break;
             }
@@ -322,7 +321,7 @@ void comparar_cartas(Carta carta1, Carta carta2)
             limpar_tela();
             continue;
         }
-        opcoes[contador] = opcao[contador];
+        atributos_escolhidos[contador] = opcao[contador];
 
         switch (opcao[contador]) {
             case 1: // Comparar população
@@ -353,24 +352,24 @@ void comparar_cartas(Carta carta1, Carta carta2)
             default:
                 printf("\n\t ++ Atributo inválido! ++\n");
         }
-        vencedor_atributo[contador] = carta_vencedora(&carta1, &carta2, opcao[contador]);
+        vencedor_atributo[contador] = carta_vencedora(&carta1, &carta2, (Atributo)opcao[contador]);
         contador++;  
     }
     
-    printf("\n===========================================================================================================");
-    printf("\n                                            RESULTADO DA RODADA                                            ");
-    printf("\n===========================================================================================================\n\n");
+    printf("\n========================================================================================================");
+    printf("\n                                         RESULTADO DA RODADA                                            ");
+    printf("\n========================================================================================================\n\n");
 
     for (size_t i = 0; i < 2; i++)
     {
         printf("Atributo escolhido #%zu: %-30s\n\n", i+1, atributo[i]);
         printf("CARTA 1:                                              CARTA 2:                                          \n");
         
-        exibir_saida_formatada(carta1, carta2, opcao[i]);
+        exibir_saida_formatada(carta1, carta2, (Atributo)opcao[i]);
     
-        printf("\n\nResultado : ");
+        printf("\n\n>> Resultado : ");
         if (vencedor_atributo[i] != NULL) {
-            valor[i] = obter_valor_atributo(*vencedor_atributo[i], opcao[i]);
+            valor[i] = obter_valor_atributo(*vencedor_atributo[i], (Atributo)opcao[i]);
             if(vencedor_atributo[i] == &carta1) {
                 printf("A Carta 1 venceu com %s = %.2f\n", atributo[i], valor[i]);
             } else {
@@ -379,6 +378,7 @@ void comparar_cartas(Carta carta1, Carta carta2)
         } else {    
             printf("Houve empate!\n");
         }
+        printf("\n\n\n");
     }
     
 
