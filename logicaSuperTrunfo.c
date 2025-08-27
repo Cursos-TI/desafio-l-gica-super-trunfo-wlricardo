@@ -188,26 +188,26 @@ void exibir_saida_formatada(Carta carta1, Carta carta2, Atributo atributo)
     printf("Cidade 1 - %-39s    Cidade 2 - %-39s\n", carta1.cidade, carta2.cidade);
 
     switch (atributo)
-    {        
+    {
         case POPULACAO:
-        printf("População - %-38lu    População - %-38lu\n", carta1.populacao, carta2.populacao);       
+            printf("População - %-38lu    População - %-38lu\n", carta1.populacao, carta2.populacao);       
         break;
-    case AREA:
-        printf("Área - %-43.2f    Área - %-43.2f\n", carta1.area, carta2.area);   
+        case AREA:
+            printf("Área - %-43.2f    Área - %-43.2f\n", carta1.area, carta2.area);   
         break;
-    case PIB:
-        printf("PIB - %-44.2f    PIB - %-44.2f\n", carta1.pib, carta2.pib);
+        case PIB:
+            printf("PIB - %-44.2f    PIB - %-44.2f\n", carta1.pib, carta2.pib);
         break;
-    case PONTOS_TURISTICOS:
-        printf("Quantidade de pontos turísticos - %-16d    Quantidade de pontos turísticos - %-16d\n", carta1.qtd_pontos_turisticos, carta2.qtd_pontos_turisticos);
+        case PONTOS_TURISTICOS:
+            printf("Quantidade de pontos turísticos - %-16d    Quantidade de pontos turísticos - %-16d\n", carta1.qtd_pontos_turisticos, carta2.qtd_pontos_turisticos);
         break;
-    case DENSIDADE_POPULACIONAL:
+        case DENSIDADE_POPULACIONAL:
         printf("Densidade populacional - %-25.2f    Densidade populacional - %-25.2f\n", carta1.densidade_populacional, carta2.densidade_populacional);               
-    }
+    }   
 }
 
 // Função para exibir a saída formatada da carta vencedora
-void exibir_carta_vencedora(Carta carta1, Atributo atributo)
+void exibir_carta_vencedora(Carta carta, Atributo atributo)
 {
     char atributo_str[40];
     switch (atributo) {
@@ -295,13 +295,14 @@ double obter_valor_atributo(Carta carta, Atributo atributo)
 // Função para comparar duas cartas por um de seus atributos
 void comparar_cartas(Carta carta1, Carta carta2)
 {
-    //Carta carta[2] = { *carta1, *carta2 };        // Cria um array de cartas para facilitar o acesso
+    // Carta carta[2] = { *carta1, *carta2 };       // Cria um array de cartas para facilitar o acesso
     char atributo[2][40] = { "", "" };              // Array para armazenar os atributos escolhidos
     int opcao[2] = {0,0}, contador = 0;
-    int atributos_escolhidos[2] = {0, 0};                         // Para armazenar as opções já escolhidas
+    int atributos_escolhidos[2] = {0, 0};           // Para armazenar as opções já escolhidas
     double valor[2] = {0.0, 0.0};                   // Valores dos atributos escolhidos para comparação : valor[0] para carta1 e valor[1] para carta2
     double soma[2] = {0.0, 0.0};                    // Soma dos valores dos atributos escolhidos : soma[0] para carta1 e soma[1] para carta2
     Carta* vencedor_atributo[2] = {NULL, NULL};     // Array para armazenar o vencedor de cada atributo
+    Carta* vencedor_partida = NULL;                 // Vencedor da partida (melhor de 2)
     
     while (contador < 2) {        
         opcao[contador] = menu(contador); 
@@ -365,8 +366,7 @@ void comparar_cartas(Carta carta1, Carta carta2)
         printf("Atributo escolhido #%zu: %-30s\n\n", i+1, atributo[i]);
         printf("CARTA 1:                                              CARTA 2:                                          \n");
         
-        exibir_saida_formatada(carta1, carta2, (Atributo)opcao[i]);
-    
+        exibir_saida_formatada(carta1, carta2, (Atributo)opcao[i]);    
         printf("\n\n>> Resultado : ");
         if (vencedor_atributo[i] != NULL) {
             valor[i] = obter_valor_atributo(*vencedor_atributo[i], (Atributo)opcao[i]);
@@ -378,75 +378,31 @@ void comparar_cartas(Carta carta1, Carta carta2)
         } else {    
             printf("Houve empate!\n");
         }
-        printf("\n\n\n");
+        printf("\n");
     }
     
+    if (soma[0] > soma[1]) {
+        vencedor_partida = &carta1;
+    } else if (soma[1] > soma[0]) {
+        vencedor_partida = &carta2;
+    } else {
+        vencedor_partida = NULL; // Empate
+    }
 
-
-    /*
-    printf("\nEscolha o %d atributo a ser comparado: ", contador + 1);
-    printf("\n1. População");   
-    printf("\n2. Área");
-    printf("\n3. PIB");
-    printf("\n4. Quantidade de pontos turísticos");
-    printf("\n5. Densidade populacional");
-    printf("\n\n>  ");
-    scanf("%d", &opcao); limpar_buffer();
-    */
-
-
-    /*
-    switch (opcao) {
-        case 1: // Comparar população
-            strcpy(atributo, "População");
-            valor1 = carta1.populacao;
-            valor2 = carta2.populacao;
-            break;
-        case 2: // Comparar área
-            strcpy(atributo, "Área");
-            valor1 = carta1.area;
-            valor2 = carta2.area;
-            break;
-        case 3: // Comparar PIB
-            strcpy(atributo, "PIB");
-            valor1 = carta1.pib;
-            valor2 = carta2.pib;
-            break;
-        case 4: // Comparar quantidade de pontos turísticos
-            strcpy(atributo, "Quantidade de pontos turísticos");
-            valor1 = carta1.qtd_pontos_turisticos;
-            valor2 = carta2.qtd_pontos_turisticos;
-            break;                
-        case 5: // Comparar densidade populacional
-            strcpy(atributo, "Densidade populacional");
-            valor1 = carta1.densidade_populacional;
-            valor2 = carta2.densidade_populacional;
-            break;
-        default:
-            printf("\n\t ++ Atributo inválido! ++\n");
-    }  
-
-    printf("\n===========================================================================================================");
-    printf("\n                                          RESULTADO DA COMPARAÇÃO                                          ");
-    printf("\n===========================================================================================================\n\n");
-    printf("Atributo escolhido: %-30s\n\n", atributo);
-    printf("CARTA 1:                                              CARTA 2:                                          \n");
-    
-    exibir_saida_formatada(carta1, carta2, opcao);
-
-    printf("\n\nResultado : ");
-
-    if (vencedor != NULL) {
-        valor = obter_valor_atributo(*vencedor, opcao);
-        if(vencedor == &carta1) {
-            printf("A Carta 1 venceu com %s = %.2f\n", atributo, valor);
-        } else {
-            printf("A Carta 2 venceu com %s = %.2f\n", atributo, valor);
+    printf("========================================================================================================\n");
+    printf("SOMA DOS ATRIBUTOS : %-29.2f    SOMA DOS ATRIBUTOS : %-29.2f\n", soma[0], soma[1]);
+    printf("\n\n");
+    if (vencedor_partida != NULL) {
+        if (vencedor_partida == &carta1) {
+            printf("A Carta 1 venceu a partida !\n\n\n");
+        } 
+        if (vencedor_partida == &carta2) {
+            printf("A Carta 2 venceu a partida !\n\n\n");
         }
-    } else {    
-        printf("Houve empate!\n");
+    } else {
+        printf("HOUVE EMPATE!                          \n\n\n");
     }
-    */
+    printf("========================================================================================================\n");
 }
 
 /**
