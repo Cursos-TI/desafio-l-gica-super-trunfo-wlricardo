@@ -49,7 +49,7 @@ void limpar_tela()
 
 // Função menu()
 /* Exibe um menu com as opções a serem seleciondas pelos usuários */
-int menu(int contador)  
+int menu(int contador, int opcoes_usadas[])  
 {    
     int opcao = 0;
     do
@@ -207,7 +207,7 @@ void exibir_saida_formatada(Carta carta1, Carta carta2, Atributo atributo)
 }
 
 // Função para exibir a saída formatada da carta vencedora
-void exibir_carta_vencedora(Carta carta, Atributo atributo)
+/*void exibir_atributo_carta_vencedora(Carta carta, Atributo atributo)
 {
     char atributo_str[40];
     switch (atributo) {
@@ -230,7 +230,7 @@ void exibir_carta_vencedora(Carta carta, Atributo atributo)
             printf("Atributo inválido!\n");
             return;
     }
-}
+}*/
 
 // Função para determinar qual carta é a vencedora
 // Retorna 1 se carta1 vencer, 2 se carta2 vencer, 0 em caso de empate
@@ -305,7 +305,7 @@ void comparar_cartas(Carta carta1, Carta carta2)
     Carta* vencedor_partida = NULL;                 // Vencedor da partida (melhor de 2)
     
     while (contador < 2) {        
-        opcao[contador] = menu(contador); 
+        opcao[contador] = menu(contador, opcoes_usadas[]);  // Chama a função para exibir menu dinâmico
 
         // Verifica se a opção já foi escolhida anteriormente
         int ja_escolhida = 0;
@@ -367,16 +367,16 @@ void comparar_cartas(Carta carta1, Carta carta2)
         printf("CARTA 1:                                              CARTA 2:                                          \n");
         
         exibir_saida_formatada(carta1, carta2, (Atributo)opcao[i]);    
-        printf("\n\n>> Resultado : ");
+        printf("\n>> Resultado : ");
         if (vencedor_atributo[i] != NULL) {
             valor[i] = obter_valor_atributo(*vencedor_atributo[i], (Atributo)opcao[i]);
             if(vencedor_atributo[i] == &carta1) {
-                printf("A Carta 1 venceu com %s = %.2f\n", atributo[i], valor[i]);
+                printf("A Carta 1 venceu com %s = %.2f\n\n\n", atributo[i], valor[i]);
             } else {
-                printf("A Carta 2 venceu com %s = %.2f\n", atributo[i], valor[i]);
+                printf("A Carta 2 venceu com %s = %.2f\n\n\n", atributo[i], valor[i]);
             }
         } else {    
-            printf("Houve empate!\n");
+            printf("Houve empate!\n\n\n");
         }
         printf("\n");
     }
@@ -388,19 +388,20 @@ void comparar_cartas(Carta carta1, Carta carta2)
     } else {
         vencedor_partida = NULL; // Empate
     }
-
-    printf("========================================================================================================\n");
+    
+    printf("--------------------------------------------------------------------------------------------------------\n");
     printf("SOMA DOS ATRIBUTOS : %-29.2f    SOMA DOS ATRIBUTOS : %-29.2f\n", soma[0], soma[1]);
     printf("\n\n");
     if (vencedor_partida != NULL) {
         if (vencedor_partida == &carta1) {
-            printf("A Carta 1 venceu a partida !\n\n\n");
+            printf("\n                                         RESULTADO DA RODADA                                         \n");
+            printf("                                      A Carta 1 venceu a partida !                                 \n\n\n");
         } 
         if (vencedor_partida == &carta2) {
-            printf("A Carta 2 venceu a partida !\n\n\n");
+            printf("                                      A Carta 2 venceu a partida !                                 \n\n\n");
         }
     } else {
-        printf("HOUVE EMPATE!                          \n\n\n");
+        printf("                                             HOUVE EMPATE !                                            \n\n\n");
     }
     printf("========================================================================================================\n");
 }
