@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+
 // Desafio Super Trunfo - Países
 // Tema 2 - Comparação das Cartas
 // Este código inicial serve como base para o desenvolvimento do sistema de comparação de cartas de cidades. 
@@ -234,8 +235,8 @@ void exibir_carta(Carta carta)
 // Função para exibir a saída formatada das cartas
 void exibir_saida_formatada(Carta carta1, Carta carta2, Atributo atributo)
 {
-    printf("-----------------------------------------------------       -----------------------------------------------------\n");
-    printf("Cidade 1 - %-44s     Cidade 2 - %-44s\n", carta1.cidade, carta2.cidade);
+    printf("--------------------------------------------------    --------------------------------------------------\n");
+    printf("Cidade 1 - %-39s    Cidade 2 - %-39s\n", carta1.cidade, carta2.cidade);
 
     switch (atributo)
     {
@@ -342,11 +343,16 @@ double obter_valor_atributo(Carta carta, Atributo atributo)
     }
 }
 
-// Função para comparar duas cartas por um de seus atributos
-/* 
- * Esta função compara duas cartas com base nos atributos escolhidos pelo usuário.
- * Ela permite que o usuário escolha até dois atributos para comparação e exibe o resultado.
- * A função também verifica se o atributo já foi escolhido anteriormente.
+/**
+ * Função para comparar duas cartas por dois atributos escolhidos pelo usuário.
+ * 
+ * Esta função solicita ao usuário que escolha dois atributos para comparar entre as duas cartas.
+ * Para cada atributo escolhido, exibe o resultado da comparação, indicando qual carta venceu ou se houve empate.
+ * Ao final, soma os valores dos atributos escolhidos para cada carta e determina a vencedora da rodada.
+ * 
+ * Parâmetros:
+ *   carta1 - Estrutura do tipo Carta representando a primeira carta.
+ *   carta2 - Estrutura do tipo Carta representando a segunda carta.
  */
 void comparar_cartas(Carta carta1, Carta carta2)
 {
@@ -419,7 +425,7 @@ void comparar_cartas(Carta carta1, Carta carta2)
     for (size_t i = 0; i < 2; i++)
     {
         printf("Atributo escolhido #%zu: %-30s\n\n", i+1, atributo[i]);
-        printf("CARTA 1:                                                    CARTA 2:                                          \n");
+        printf("CARTA 1:                                              CARTA 2:                                          \n");
         
         exibir_saida_formatada(carta1, carta2, (Atributo)opcao[i]);    
         printf("\n>> Resultado : ");
