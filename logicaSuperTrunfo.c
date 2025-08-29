@@ -41,36 +41,105 @@ int limpar_buffer() {
 void limpar_tela()
 {
     #ifdef _WIN32
-        system("cls");
+    system("cls");
     #else
-        system("clear");
+    system("clear");
     #endif
 }
+
+// Struct para armazenar as propriedades de uma carta
+typedef struct {
+    char estado[MAX];
+    char codigo[MAX];
+    char cidade[MAX];
+    unsigned long int populacao;
+    float area;                     // Área em km²
+    float pib;                      // PIB em bilhões
+    float densidade_populacional;   // Densidade populacional (hab/km²)
+    float pib_per_capita;           // PIB per capita (R$)
+    int qtd_pontos_turisticos;
+} Carta;
+
+typedef enum {
+    POPULACAO = 1,
+    AREA,
+    PIB,
+    PONTOS_TURISTICOS,
+    DENSIDADE_POPULACIONAL,
+    QTD_ATRIBUTOS                               // Quantidade total de atributos úteis disponíveis + 1
+} Atributo;
 
 // Função menu()
 /* Exibe um menu com as opções a serem seleciondas pelos usuários */
 int menu(int contador, int opcoes_usadas[])  
 {    
-    int opcao = 0;
+    int opcao;                                  // Opção escolhida pelo usuário 
+    int opcao_valida;                           // Flag para verificar se a opção é válida  
+    int opcoes_validas[QTD_ATRIBUTOS-1];       // Opções válidas do tamanho do enum Atributo
+    char* nomes_atributos[] = {                 // Nomes dos atributos para exibição
+        "População",
+        "Área",
+        "PIB",
+        "Quantidade de pontos turísticos",
+        "Densidade populacional"
+    };
+
+    for (size_t i = 0; i < QTD_ATRIBUTOS-1; i++)
+    {   
+        opcoes_validas[i] = i + 1;              // Preenche o array com as opções válidas segundo o tamanho do enum Atributo (1 a 5)
+    }    
+
     do
     {
-        printf("\nEscolha o %d atributo a ser comparado: ", contador + 1);
-        printf("\n1. População");
-        printf("\n2. Área");
-        printf("\n3. PIB");
-        printf("\n4. Quantidade de pontos turísticos");
-        printf("\n5. Densidade populacional");
-        printf("\n\n>  ");
-        scanf("%d", &opcao); limpar_buffer();  
+        printf("\nEscolha o %do atributo a ser comparado: \n", contador + 1);
 
-        if (opcao < 1 || opcao > 5) {
-            printf("\n\t ++ Opção inválida! Tente novamente. ++\n");
+        int opcoes_disponiveis = 0;             // Contador de opções disponíveis
+        for (int i = 0; i < QTD_ATRIBUTOS-1; i++) {
+            if (!opcoes_usadas[i]) {            // Se a opção ainda não foi usada
+                printf("[%d] %s\n", opcoes_validas[i], nomes_atributos[i]);
+                opcoes_disponiveis++;
+            }
+        }
+
+        if (opcoes_disponiveis == 0) {
+            printf("\nNenhuma opção disponível!\n");
+            return -1;                          // Erro: não deveria acontecer com QTD_ATRIBUTOS <= 5
+        }
+
+        printf("\n>  ");
+        if (scanf("%d", &opcao) != 1) {
+            limpar_buffer();
+            printf("\n\t ++ Entrada inválida! Tente novamente. ++\n");
+            esperar_dois_milissegundos();
+            limpar_tela();
+            continue;
+        }
+        limpar_buffer();
+
+        // Verifica se a opção é válida e se está disponível
+        opcao_valida = 0;
+        for (int i = 0; i < 5; i++) {
+            if (opcao == opcoes_validas[i] && !opcoes_usadas[i]) {
+                opcao_valida = 1;
+                break;
+            }
+        }
+
+        if (!opcao_valida) {
+            printf("\n\t ++ Opção inválida ou já escolhida! Tente novamente. ++\n");
             esperar_dois_milissegundos();
             limpar_tela();
         }
 
-    } while (opcao < 1 || opcao > 5);
-    
+        // Marca a opção como usada
+        for (int i = 0; i < 5; i++) {
+            if (opcao == opcoes_validas[i]) {
+                opcoes_usadas[i] = 1;
+                break;
+            }
+        }
+        limpar_tela();
+    } while (!opcao_valida);    
     return opcao;
 }
 
@@ -106,27 +175,6 @@ float calcular_pib_per_capita(float pib, float populacao)
     }
     return (pib * 1000000000.0f) / populacao;      // PIB em bilhões
 }
-
-// Struct para armazenar as propriedades de uma carta
-typedef struct {
-    char estado[MAX];
-    char codigo[MAX];
-    char cidade[MAX];
-    unsigned long int populacao;
-    float area;                     // Área em km²
-    float pib;                      // PIB em bilhões
-    float densidade_populacional;   // Densidade populacional (hab/km²)
-    float pib_per_capita;           // PIB per capita (R$)
-    int qtd_pontos_turisticos;
-} Carta;
-
-typedef enum {
-    POPULACAO = 1,
-    AREA,
-    PIB,
-    PONTOS_TURISTICOS,
-    DENSIDADE_POPULACIONAL
-} Atributo;
 
 // Função para cadastrar uma carta
 void cadastrar_carta(Carta *carta) 
@@ -295,7 +343,7 @@ double obter_valor_atributo(Carta carta, Atributo atributo)
 // Função para comparar duas cartas por um de seus atributos
 void comparar_cartas(Carta carta1, Carta carta2)
 {
-    // Carta carta[2] = { *carta1, *carta2 };       // Cria um array de cartas para facilitar o acesso
+    int opcoes_usadas[QTD_ATRIBUTOS-1] = {0};      // Array para marcar as opções já escolhidas (0 = não usado, 1 = usado)
     char atributo[2][40] = { "", "" };              // Array para armazenar os atributos escolhidos
     int opcao[2] = {0,0}, contador = 0;
     int atributos_escolhidos[2] = {0, 0};           // Para armazenar as opções já escolhidas
@@ -305,10 +353,10 @@ void comparar_cartas(Carta carta1, Carta carta2)
     Carta* vencedor_partida = NULL;                 // Vencedor da partida (melhor de 2)
     
     while (contador < 2) {        
-        opcao[contador] = menu(contador, opcoes_usadas[]);  // Chama a função para exibir menu dinâmico
+        opcao[contador] = menu(contador, opcoes_usadas);  // Chama a função para exibir menu dinâmico
 
         // Verifica se a opção já foi escolhida anteriormente
-        int ja_escolhida = 0;
+        /*int ja_escolhida = 0;
         for (int i = 0; i < contador; i++) {
             if (opcao[contador] == atributos_escolhidos[i]) {
                 ja_escolhida = 1;
@@ -321,7 +369,7 @@ void comparar_cartas(Carta carta1, Carta carta2)
             esperar_dois_milissegundos();
             limpar_tela();
             continue;
-        }
+        }*/
         atributos_escolhidos[contador] = opcao[contador];
 
         switch (opcao[contador]) {
