@@ -91,7 +91,18 @@ int menu(int contador, int opcoes_usadas[])
 
     do
     {
+<<<<<<< HEAD
         printf("\nEscolha o %do atributo a ser comparado: \n", contador + 1);
+=======
+        printf("\nEscolha o %do atributo a ser comparado: ", contador + 1);
+        printf("\n1. População");
+        printf("\n2. Área");
+        printf("\n3. PIB");
+        printf("\n4. Quantidade de pontos turísticos");
+        printf("\n5. Densidade populacional");
+        printf("\n\n>  ");
+        scanf("%d", &opcao); limpar_buffer();  
+>>>>>>> cdc45d0 (Comparação entre duas cartas e exibição dos resultados)
 
         int opcoes_disponiveis = 0;             // Contador de opções disponíveis
         for (int i = 0; i < QTD_ATRIBUTOS-1; i++) {
@@ -232,12 +243,13 @@ void exibir_carta(Carta carta)
 // Função para exibir a saída formatada das cartas
 void exibir_saida_formatada(Carta carta1, Carta carta2, Atributo atributo)
 {
-    printf("--------------------------------------------------    --------------------------------------------------\n");
-    printf("Cidade 1 - %-39s    Cidade 2 - %-39s\n", carta1.cidade, carta2.cidade);
+    printf("-----------------------------------------------------       -----------------------------------------------------\n");
+    printf("Cidade 1 - %-44s     Cidade 2 - %-44s\n", carta1.cidade, carta2.cidade);
 
     switch (atributo)
     {
         case POPULACAO:
+<<<<<<< HEAD
             printf("População - %-38lu    População - %-38lu\n", carta1.populacao, carta2.populacao);       
         break;
         case AREA:
@@ -252,6 +264,22 @@ void exibir_saida_formatada(Carta carta1, Carta carta2, Atributo atributo)
         case DENSIDADE_POPULACIONAL:
         printf("Densidade populacional - %-25.2f    Densidade populacional - %-25.2f\n", carta1.densidade_populacional, carta2.densidade_populacional);               
     }   
+=======
+        printf("População - %-44lu    População - %-44lu\n", carta1.populacao, carta2.populacao);       
+        break;
+    case AREA:
+        printf("Área - %-49.2f    Área - %-49.2f\n", carta1.area, carta2.area);   
+        break;
+    case PIB:
+        printf("PIB - %-50.2f    PIB - %-50.2f\n", carta1.pib, carta2.pib);
+        break;
+    case PONTOS_TURISTICOS:
+        printf("Quantidade de pontos turísticos - %-22d    Quantidade de pontos turísticos - %-22d\n", carta1.qtd_pontos_turisticos, carta2.qtd_pontos_turisticos);
+        break;
+    case DENSIDADE_POPULACIONAL:
+        printf("Densidade populacional - %-31.2f    Densidade populacional - %-31.2f\n", carta1.densidade_populacional, carta2.densidade_populacional);               
+    }
+>>>>>>> cdc45d0 (Comparação entre duas cartas e exibição dos resultados)
 }
 
 // Função para exibir a saída formatada da carta vencedora
@@ -353,7 +381,11 @@ void comparar_cartas(Carta carta1, Carta carta2)
     Carta* vencedor_partida = NULL;                 // Vencedor da partida (melhor de 2)
     
     while (contador < 2) {        
+<<<<<<< HEAD
         opcao[contador] = menu(contador, opcoes_usadas);  // Chama a função para exibir menu dinâmico
+=======
+        opcao[contador] = menu(contador); 
+>>>>>>> cdc45d0 (Comparação entre duas cartas e exibição dos resultados)
 
         // Verifica se a opção já foi escolhida anteriormente
         /*int ja_escolhida = 0;
@@ -405,17 +437,29 @@ void comparar_cartas(Carta carta1, Carta carta2)
         contador++;  
     }
     
+<<<<<<< HEAD
     printf("\n========================================================================================================");
     printf("\n                                         RESULTADO DA RODADA                                            ");
     printf("\n========================================================================================================\n\n");
+=======
+    printf("\n=================================================================================================================");
+    printf("\n                                               RESULTADO DA RODADA                                               ");
+    printf("\n=================================================================================================================\n\n");
+>>>>>>> cdc45d0 (Comparação entre duas cartas e exibição dos resultados)
 
     for (size_t i = 0; i < 2; i++)
     {
         printf("Atributo escolhido #%zu: %-30s\n\n", i+1, atributo[i]);
-        printf("CARTA 1:                                              CARTA 2:                                          \n");
+        printf("CARTA 1:                                                    CARTA 2:                                          \n");
         
+<<<<<<< HEAD
         exibir_saida_formatada(carta1, carta2, (Atributo)opcao[i]);    
         printf("\n>> Resultado : ");
+=======
+        exibir_saida_formatada(carta1, carta2, opcao[i]);
+    
+        printf("Resultado : ");
+>>>>>>> cdc45d0 (Comparação entre duas cartas e exibição dos resultados)
         if (vencedor_atributo[i] != NULL) {
             valor[i] = obter_valor_atributo(*vencedor_atributo[i], (Atributo)opcao[i]);
             if(vencedor_atributo[i] == &carta1) {
@@ -426,7 +470,11 @@ void comparar_cartas(Carta carta1, Carta carta2)
         } else {    
             printf("Houve empate!\n\n\n");
         }
+<<<<<<< HEAD
         printf("\n");
+=======
+        printf("\n\n");
+>>>>>>> cdc45d0 (Comparação entre duas cartas e exibição dos resultados)
     }
     
     if (soma[0] > soma[1]) {
