@@ -78,7 +78,7 @@ int menu(int contador, int opcoes_usadas[])
 {    
     int opcao;                                  // Opção escolhida pelo usuário 
     int opcao_valida;                           // Flag para verificar se a opção é válida  
-    int opcoes_validas[QTD_ATRIBUTOS-1];       // Opções válidas do tamanho do enum Atributo
+    int opcoes_validas[QTD_ATRIBUTOS-1];        // Opções válidas do tamanho do enum Atributo
     char* nomes_atributos[] = {                 // Nomes dos atributos para exibição
         "População",
         "Área",
@@ -356,7 +356,7 @@ double obter_valor_atributo(Carta carta, Atributo atributo)
  */
 void comparar_cartas(Carta carta1, Carta carta2)
 {
-    int opcoes_usadas[QTD_ATRIBUTOS-1] = {0};      // Array para marcar as opções já escolhidas (0 = não usado, 1 = usado)
+    int opcoes_usadas[QTD_ATRIBUTOS-1] = {0};       // Array para marcar as opções já escolhidas (0 = não usado, 1 = usado)
     char atributo[2][40] = { "", "" };              // Array para armazenar os atributos escolhidos
     int opcao[2] = {0,0}, contador = 0;
     int atributos_escolhidos[2] = {0, 0};           // Para armazenar as opções já escolhidas
